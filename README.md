@@ -46,30 +46,17 @@ The extension scans your workspace for Markdown files (`.md`) that are named wit
 
 ## Release Notes
 
-### 0.4.0
+For a full list of changes, please see the [CHANGELOG.md](CHANGELOG.md) file.
 
-- Added screenshots to the `README.md`.
-- Updated the extension icon for a more modern look.
+### 0.5.0
 
-### 0.3.17
-
+- Reverted to the old calendar icon.
+- Updated the extension icon.
+- Updated the SVG icon to use VS Code theme colors.
+- Added screenshots to `README.md`.
 - Updated `README.md` with detailed usage instructions on how to track habits.
-
-### 0.3.16
-
 - Automated the VSIX extension file generation as part of the `npm run package` script.
-
-### 0.3.15
-
 - Updated `README.md` to be more accurate and descriptive.
 - Removed unused dependencies (`@types/mocha`, `@vscode/test-electron`).
 - Removed the unimplemented `habitTracker.notesFolder` setting.
-
-### 0.3.14
-
 - Renamed the default branch from `master` to `main`.
-- Added a `Usage` section to the `README.md`.
-
-### 0.0.1
-
-Initial release of the Habit Tracker extension.

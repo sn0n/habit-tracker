@@ -6,30 +6,20 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-## [0.4.4] - 2025-09-26
+## [0.5.0] - 2025-09-26
 
 ### Changed
 
 - Reverted to the old calendar icon.
-
-## [0.4.3] - 2025-09-25
-
-### Changed
-
-- Reverted to the old calendar icon.
-
-## [0.4.2] - 2025-09-25
-
-### Changed
-
 - Updated the extension icon.
-
-## [0.4.1] - 2025-09-25
-
-### Changed
-
 - Updated the SVG icon to use VS Code theme colors.
-- Amended the last commit to include `.gitignore` changes.
+- Added screenshots to `README.md`.
+- Updated `README.md` with detailed usage instructions on how to track habits.
+- Automated the VSIX extension file generation as part of the `npm run package` script.
+- Updated `README.md` to be more accurate and descriptive.
+- Removed unused dependencies (`@types/mocha`, `@vscode/test-electron`).
+- Removed the unimplemented `habitTracker.notesFolder` setting.
+- Renamed the default branch from `master` to `main`.
 
 ## [0.4.0] - 2025-09-25
 
