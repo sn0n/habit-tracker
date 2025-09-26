@@ -6,6 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.4.1] - 2025-09-25
+
+### Changed
+
+- Updated the SVG icon to use VS Code theme colors.
+- Amended the last commit to include `.gitignore` changes.
+
 ## [0.4.0] - 2025-09-25
 
 ### Changed
