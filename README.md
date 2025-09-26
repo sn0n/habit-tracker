@@ -32,12 +32,15 @@ The extension scans your workspace for Markdown files (`.md`) that are named wit
 ## Screenshots
 
 ![Habit Tracker Main View](assets/titlebar_calendar.png)
+
 *icon to launch the habit tracker*
 
 ![Habit Tracker Main View](assets/main.png)
+
 *Main view of the habit tracker, showing a graph of your habits over time.*
 
 ![Habit Tracker Dialog](assets/dialog.png)
+
 *Detail view for a specific day, showing the habits tracked in that day's note.*
 
 
