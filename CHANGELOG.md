@@ -6,4 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.3.14] - 2025-09-25
+
+### Changed
+
+- Renamed the default branch from `master` to `main`.
+
 - Initial release
