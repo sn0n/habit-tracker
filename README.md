@@ -29,7 +29,21 @@ The extension scans your workspace for Markdown files (`.md`) that are named wit
     *   Run the `Habit Tracker: Show` command.
     *   Alternatively, when viewing a Markdown file, click the calendar icon in the editor title bar.
 
+## Screenshots
+
+![Habit Tracker Main View](assets/main.png)
+*Main view of the habit tracker, showing a graph of your habits over time.*
+
+![Habit Tracker Dialog](assets/dialog.png)
+*Detail view for a specific day, showing the habits tracked in that day's note.*
+
+
 ## Release Notes
+
+### 0.4.0
+
+- Added screenshots to the `README.md`.
+- Updated the extension icon for a more modern look.
 
 ### 0.3.17
 

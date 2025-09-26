@@ -6,6 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-09-25
+
+### Changed
+
+- Added screenshots to `README.md`.
+- Updated the extension icon.
+
 ## [0.3.17] - 2025-09-25
 
 ### Changed
