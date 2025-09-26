@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        padding: 1em;
+        color: var(--vscode-editor-foreground);
+        background-color: var(--vscode-editor-background);
+      }
+      #charts-container { display: flex; flex-wrap: wrap; gap: 20px; }
+      .habit-container { width: 100%; }
+      .habit-title { font-size: 1.1em; margin-bottom: 8px; margin-left: 4px; font-weight: 600; }
+      .chart-wrapper { border: 1px solid var(--vscode-widget-border, #ccc); border-radius: 8px; padding: 1em; overflow: hidden; }
+      .habit-grid-container { display: grid; grid-auto-flow: column; grid-template-columns: repeat(53, minmax(0, 1fr)); grid-template-rows: repeat(7, auto); gap: 2px; }
+      .day-cell { background-color: var(--vscode-input-background, #ebedf0); border-radius: 2px; aspect-ratio: 1 / 1; cursor: pointer; }
+      .modal-backdrop {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex; justify-content: center; align-items: center;
+        z-index: 100;
+      }
+      .modal-content {
+        background-color: var(--vscode-editor-background);
+        padding: 20px;
+        border-radius: 8px;
+        min-width: 500px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      }
+      #historical-chart-container {
+        display: flex;
+        gap: 1px;
+        margin-top: 1em;
+        padding: 1em;
+        border: 1px solid var(--vscode-widget-border, #ccc);
+        border-radius: 4px;
+        height: 120px;
+        align-items: flex-end; /* Align bars to the bottom */
+      }
+    </style>
+</head>
+<body>
+    <h1>Habit Tracker 📊</h1>
+    
+    <div id="charts-container"></div>
+    <div id="message-container" style="display: none;"></div>
+    <div id="modal" class="modal-backdrop" style="display: none;">
+        <div id="modal-content" class="modal-content"></div>
+    </div>
+
+    <script>
+      const vscode = acquireVsCodeApi();
+      const chartsContainer = document.getElementById('charts-container');
+      const messageContainer = document.getElementById('message-container');
+      const modal = document.getElementById('modal');
+      const modalContent = document.getElementById('modal-content');
+
+      let allHabitData = {};
+
+      window.addEventListener('message', event => {
+          const message = event.data;
+          switch (message.command) {
+              case 'updateData':
+                  allHabitData = message.data;
+                  messageContainer.style.display = 'none';
+                  chartsContainer.style.display = 'flex';
+                  renderAllCharts(allHabitData);
+                  break;
+              case 'showError':
+                  chartsContainer.style.display = 'none';
+                  messageContainer.style.display = 'block';
+                  messageContainer.textContent = message.message;
+                  break;
+              case 'showDayDetails':
+                  const { date, habitName, habits } = message.data;
+                  renderModalContent(date, habitName, habits);
+                  modal.style.display = 'flex';
+                  break;
+          }
+      });
+
+      modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+              modal.style.display = 'none';
+          }
+      });
+
+      function renderModalContent(date, habitName, habits) {
+          const value = habits[habitName] || 0;
+          const percentage = Math.round(value * 100);
+          const barPercentage = Math.min(100, percentage);
+
+          const progressBarHtml = `
+              <div style="width: 200px; height: 20px; background-color: var(--vscode-input-background, #ebedf0); border: 1px solid var(--vscode-widget-border, #ccc); border-radius: 4px; overflow: hidden;" title="${date}: ${value.toFixed(2)}">
+                  <div style="width: ${barPercentage}%; height: 100%; background-color: rgba(33, 110, 57, 0.8);"></div>
+              </div>
+          `;
+
+          modalContent.innerHTML = `
+              <h3>${habitName} on ${date}</h3>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1em;">
+                  ${progressBarHtml}
+                  <span>${percentage}%</span>
+              </div>
+              <hr>
+              <div>
+                  <label for="period-select">Show history for last: </label>
+                  <select id="period-select">
+                      <option value="14" selected>14 days</option>
+                      <option value="31">31 days</option>
+                      <option value="180">180 days</option>
+                      <option value="365">365 days</option>
+                  </select>
+              </div>
+              <div id="historical-chart-container"></div>
+          `;
+
+          const periodSelect = document.getElementById('period-select');
+          const historicalChartContainer = document.getElementById('historical-chart-container');
+
+          const renderHistorical = () => {
+              const period = parseInt(periodSelect.value, 10);
+              renderHistoricalChart(historicalChartContainer, habitName, date, period);
+          };
+
+          periodSelect.addEventListener('change', renderHistorical);
+          
+          // Use setTimeout to ensure the container is rendered before we get its width
+          setTimeout(renderHistorical, 0);
+      }
+
+      function renderHistoricalChart(container, habitName, endDateStr, periodInDays) {
+          container.innerHTML = ''; // Clear previous chart
+          const chartHeight = 100; // in pixels
+          container.style.height = `${chartHeight}px`;
+
+          // We need the container to have a width to calculate the bar width.
+          const containerWidth = container.clientWidth;
+          const gap = 1; // 1px gap between bars
+          const barWidth = (containerWidth / periodInDays) - gap;
+
+          if (barWidth <= 0) {
+              container.innerHTML = 'Cannot display chart: time period too long to fit.';
+              return;
+          }
+
+          // Use UTC dates to avoid timezone issues
+          const endDate = new Date(endDateStr + 'T00:00:00Z');
+
+          for (let i = periodInDays - 1; i >= 0; i--) {
+              const d = new Date(endDate.getTime());
+              d.setUTCDate(d.getUTCDate() - i);
+              const dateStr = d.toISOString().slice(0, 10);
+
+              const dayData = allHabitData[dateStr];
+              const fraction = dayData && dayData[habitName] ? dayData[habitName] : 0;
+              const percentage = Math.min(1.0, fraction);
+
+              const barContainer = document.createElement('div');
+              barContainer.title = `${dateStr}: ${Math.round(fraction * 100)}%`;
+              barContainer.style.width = `${barWidth}px`;
+              barContainer.style.height = `${chartHeight}px`;
+              barContainer.style.backgroundColor = 'var(--vscode-input-background, #ebedf0)';
+              barContainer.style.display = 'flex';
+              barContainer.style.flexDirection = 'column';
+              barContainer.style.justifyContent = 'flex-end';
+              barContainer.style.borderRadius = '1px';
+              barContainer.style.overflow = 'hidden';
+
+              const fillHeight = percentage * chartHeight;
+              const fillDiv = document.createElement('div');
+              fillDiv.style.height = `${fillHeight}px`;
+              fillDiv.style.width = '100%';
+              fillDiv.style.backgroundColor = `rgba(33, 110, 57, 0.8)`;
+
+              barContainer.appendChild(fillDiv);
+              container.appendChild(barContainer);
+          }
+      }
+
+      function renderAllCharts(data) {
+          chartsContainer.innerHTML = ''; 
+          const allHabits = new Set();
+          for (const date in data) { for (const habit in data[date]) { allHabits.add(habit); } }
+
+          allHabits.forEach(habitName => {
+              const habitContainer = document.createElement('div');
+              habitContainer.className = 'habit-container';
+              const title = document.createElement('h2');
+              title.className = 'habit-title';
+              title.textContent = habitName;
+              const chartWrapper = document.createElement('div');
+              chartWrapper.className = 'chart-wrapper';
+              const grid = document.createElement('div');
+              grid.className = 'habit-grid-container';
+
+              const today = new Date();
+              const oneYearAgo = new Date(new Date().setDate(today.getDate() - 365));
+              oneYearAgo.setHours(0, 0, 0, 0);
+
+              const dayOfWeekOffset = oneYearAgo.getDay();
+              for (let i = 0; i < dayOfWeekOffset; i++) {
+                  const blankCell = document.createElement('div');
+                  blankCell.className = 'day-cell';
+                  blankCell.style.visibility = 'hidden';
+                  grid.appendChild(blankCell);
+              }
+
+              for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+                  const dateStr = d.toISOString().slice(0, 10);
+                  const dayCell = document.createElement('div');
+                  dayCell.className = 'day-cell';
+                  const dayData = data[dateStr];
+                  const fraction = dayData ? dayData[habitName] || 0 : 0;
+                  dayCell.title = `${dateStr}: ${fraction.toFixed(2)}`;
+                  if (fraction > 0) {
+                      dayCell.style.backgroundColor = `rgba(33, 110, 57, ${fraction})`;
+                  }
+                  dayCell.onclick = () => {
+                      if (dayData) {
+                          vscode.postMessage({ command: 'dayClicked', data: { date: dateStr, habits: dayData, habitName: habitName } });
+                      }
+                  };
+                  grid.appendChild(dayCell);
+              }
+              chartWrapper.appendChild(grid);
+              habitContainer.appendChild(title);
+              habitContainer.appendChild(chartWrapper);
+              chartsContainer.appendChild(habitContainer);
+          });
+      }
+    </script>
+</body>
+</html>
