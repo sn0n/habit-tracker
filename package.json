@@ -2,7 +2,7 @@
   "name": "habit-tracker",
   "displayName": "habit-tracker",
   "description": "graph your habits",
-  "version": "0.3.16",
+  "version": "0.3.17",
   "engines": {
     "vscode": "^1.104.0"
   },

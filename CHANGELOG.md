@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.3.17] - 2025-09-25
+
+### Changed
+
+- Updated `README.md` with detailed usage instructions on how to track habits.
+
 ## [0.3.16] - 2025-09-25
 
 ### Changed

@@ -18,12 +18,22 @@ The extension scans your workspace for Markdown files (`.md`) that are named wit
 
 ## Usage
 
-1.  **Open the Habit Tracker:**
+1.  **Track Your Habits:**
+    *   In your daily note files (e.g., `2025-09-25.md`), use the following syntax to track your habits:
+        *   `&habitname` - Marks a habit as fully completed (e.g., `&exercise`).
+        *   `&habitname(value/goal)` - Tracks a fractional habit (e.g., `&water(6/8)`).
+        *   `&habitname(#)` - An alternative syntax for a completed habit (e.g., `&meditate(1)`).
+
+2.  **Open the Habit Tracker:**
     *   Open the Command Palette (Ctrl+Shift+P).
     *   Run the `Habit Tracker: Show` command.
     *   Alternatively, when viewing a Markdown file, click the calendar icon in the editor title bar.
 
 ## Release Notes
+
+### 0.3.17
+
+- Updated `README.md` with detailed usage instructions on how to track habits.
 
 ### 0.3.16
 
