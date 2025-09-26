@@ -2,7 +2,7 @@
   "name": "habit-tracker",
   "displayName": "habit-tracker",
   "description": "graph your habits",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "repository": "https://github.com/sn0n/habit-tracker",
   "engines": {
     "vscode": "^1.104.0"
@@ -17,7 +17,7 @@
       {
         "command": "habit-tracker.show",
         "title": "Show Habit Tracker",
-        "icon": "assets/icon.svg"
+        "icon": "$(calendar)"
       }
     ],
     "menus": {
