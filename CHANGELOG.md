@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.4.2] - 2025-09-25
+
+### Changed
+
+- Updated the extension icon.
+
 ## [0.4.1] - 2025-09-25
 
 ### Changed
