@@ -2,7 +2,7 @@
   "name": "habit-tracker",
   "displayName": "habit-tracker",
   "description": "graph your habits",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "repository": "https://github.com/sn0n/habit-tracker",
   "engines": {
     "vscode": "^1.104.0"

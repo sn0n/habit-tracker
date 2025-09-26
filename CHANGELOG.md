@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.4.3] - 2025-09-25
+
+### Changed
+
+- Reverted to the old calendar icon.
+
 ## [0.4.2] - 2025-09-25
 
 ### Changed
