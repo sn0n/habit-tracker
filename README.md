@@ -25,6 +25,10 @@ The extension scans your workspace for Markdown files (`.md`) that are named wit
 
 ## Release Notes
 
+### 0.3.16
+
+- Automated the VSIX extension file generation as part of the `npm run package` script.
+
 ### 0.3.15
 
 - Updated `README.md` to be more accurate and descriptive.

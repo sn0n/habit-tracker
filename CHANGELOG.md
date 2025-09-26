@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.3.16] - 2025-09-25
+
+### Changed
+
+- Automated the VSIX extension file generation as part of the `npm run package` script.
+
 ## [0.3.15] - 2025-09-25
 
 ### Changed
