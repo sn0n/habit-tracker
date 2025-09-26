@@ -2,25 +2,34 @@
 
 A VS Code extension to graph your habits from daily notes.
 
+This extension was tested with the [Foam](https://github.com/foambubble/foam) extension for VS Code, but it should work with any system where you create daily notes in Markdown.
+
+The extension scans your workspace for Markdown files (`.md`) that are named with a date prefix in the format `YYYY-MM-DD` (e.g., `2025-09-25-daily-note.md`). It then looks for habit tracking syntax within those files in the following formats:
+
+-   `&habit` (for a completed habit)
+-   `&habit(value/goal)` (for a fractional habit, like `&water(3/8)`)
+
+
 ## Features
 
 *   **Visualize Your Habits:** See your progress with a beautiful graph.
-*   **Simple Configuration:** Just point the extension to your notes folder.
+*   **Workspace-Wide Scanning:** Automatically finds and processes your habit notes from anywhere in your open workspace.
 *   **Markdown-Friendly:** Integrates with your existing Markdown-based note-taking workflow.
 
 ## Usage
 
-1.  **Set Your Notes Folder:**
-    *   Open your VS Code settings (Ctrl+,).
-    *   Search for `habitTracker.notesFolder`.
-    *   Set the value to the absolute path of the folder containing your daily notes.
-
-2.  **Open the Habit Tracker:**
+1.  **Open the Habit Tracker:**
     *   Open the Command Palette (Ctrl+Shift+P).
     *   Run the `Habit Tracker: Show` command.
     *   Alternatively, when viewing a Markdown file, click the calendar icon in the editor title bar.
 
 ## Release Notes
+
+### 0.3.15
+
+- Updated `README.md` to be more accurate and descriptive.
+- Removed unused dependencies (`@types/mocha`, `@vscode/test-electron`).
+- Removed the unimplemented `habitTracker.notesFolder` setting.
 
 ### 0.3.14
 
